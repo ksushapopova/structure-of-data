@@ -1,66 +1,60 @@
-#include "TrieTree.h"
-#include <iostream>
-#include <string>;
+#include "Double_list.h"
+#include <fstream>
 
-int main() {
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    Cellular sub[5] = {};
+    Node* list = nullptr;
+    Node* tail = nullptr;
 
-    // Create a trie
-    Trie trie;
+    std::string house, flat, balance;
+    std::ifstream file("Subscribes.txt");
 
-    // Insert some words
-    trie.insert("apple");
-    trie.insert("app");
-    trie.insert("banana");
-    trie.insert("bat");
-
-    std::cout << "Enter the task number: " << std::endl;
-    std::cout << "1.Add word. " << std::endl;
-    std::cout << "2.Delete word." << std::endl;
-    std::cout << "3.Print tree." << std::endl;
-    std::cout << "4.Print all words. " << std::endl;
-    std::cout << "5.Delete even-lenght word." << std::endl;
-    bool tmp = true;
-    while (tmp == true)
+    for (int i = 0; i < 5; i++)
     {
-        int x;
-        std::cout << "Enter the task number: " << std::endl;
-        std::cin >> x;
-        switch (x) {
-        case 1:
+        std::getline(file, sub[i].name, ' ');
+        std::getline(file, sub[i].surname, ' ');
+        std::getline(file, sub[i].patronymic, ' ');
+        std::getline(file, sub[i].home.street, ' ');
+        std::getline(file, house, ' ');
+        std::getline(file, flat, ' ');
+        std::getline(file, sub[i].number, ' ');
+        std::getline(file, balance, '\n');
+        sub[i].home.house = std::stoi(house);
+        sub[i].home.flat = std::stoi(flat);
+        sub[i].balance = std::stoi(balance);
+    }
+    
+    file.close();
+
+    Cellular temp;
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 4; j++)
         {
-            string i;
-            std::cout << "enter word ";
-            std::cin >> i;
-            trie.insert(i);
-            std::cout << "------------------" << std::endl;
-            break;
-        }
-        case 2:
-        {
-            string j;
-            std::cout << "enter word ";
-            std::cin >> j;
-            trie.remove(j);
-            std::cout << "------------------" << std::endl;
-            break;
-        }
-        case 3:
-        {
-            trie.visualizeTrie();
-            std::cout << "------------------" << std::endl;
-            break;
-        }
-        case 4:
-            trie.printAllWords();
-            std::cout << "------------------" << std::endl;
-            break;
-        case 5:
-            trie.removeEvenLengthWords();
-            std::cout << "------------------" << std::endl;
-            break;
-        case 0:
-            tmp = false;
+            if (sub[j].balance > sub[j+1].balance)
+            {
+                temp = sub[j];
+                sub[j] = sub[j+1];
+                sub[j+1] = temp;
+
+            }
         }
     }
+    for (int i = 0; i < 5; i++)
+    {   if (list == nullptr)
+            {
+                AddToHead(list, tail, sub[0]);
+            }
+    else
+    {
+        AddToTail(list, tail, sub[i]);
+    }
+    }
 
-}
+    Print(list);
+    std::cout << "______________________________________________________________________________" << "\n";
+    delete_search_value(list, tail, 100); // void
+    Print(list);
+    }

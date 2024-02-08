@@ -1,68 +1,66 @@
-#include "queue.h"
+#include "TrieTree.h"
+#include <iostream>
+#include <string>;
 
-#include <iostream>   
-#include <string> 
+int main() {
 
-std::string doubling(Queue& qtext)
-{
-    Queue letters;
-    std::string result = "";
-    int len = qtext.size();
-    if (len % 2 != 0)
+    // Create a trie
+    Trie trie;
+
+    // Insert some words
+    trie.insert("apple");
+    trie.insert("app");
+    trie.insert("banana");
+    trie.insert("bat");
+
+    std::cout << "Enter the task number: " << std::endl;
+    std::cout << "1.Add word. " << std::endl;
+    std::cout << "2.Delete word." << std::endl;
+    std::cout << "3.Print tree." << std::endl;
+    std::cout << "4.Print all words. " << std::endl;
+    std::cout << "5.Delete even-lenght word." << std::endl;
+    bool tmp = true;
+    while (tmp == true)
     {
-        for (int i = 0; i <= len - 1; i++)
+        int x;
+        std::cout << "Enter the task number: " << std::endl;
+        std::cin >> x;
+        switch (x) {
+        case 1:
         {
-            letters.enqueue(qtext.peek());
-            if (i == len / 2)
-            {
-                letters.enqueue(qtext.peek());
-
-            }
-            qtext.dequeue();
+            string i;
+            std::cout << "enter word ";
+            std::cin >> i;
+            trie.insert(i);
+            std::cout << "------------------" << std::endl;
+            break;
         }
-        while (!letters.is_empty())
+        case 2:
         {
-            result += letters.peek();
-            letters.dequeue();
+            string j;
+            std::cout << "enter word ";
+            std::cin >> j;
+            trie.remove(j);
+            std::cout << "------------------" << std::endl;
+            break;
         }
-
+        case 3:
+        {
+            trie.visualizeTrie();
+            std::cout << "------------------" << std::endl;
+            break;
+        }
+        case 4:
+            trie.printAllWords();
+            std::cout << "------------------" << std::endl;
+            break;
+        case 5:
+            trie.removeEvenLengthWords();
+            std::cout << "------------------" << std::endl;
+            break;
+        case 0:
+            tmp = false;
+        }
     }
-    else
-    {
-        while (!qtext.is_empty())
-        {
-            result += qtext.peek();
-            qtext.dequeue();
-        }
-                
-    }
 
-    return result;
-}
-
-int main()
-{
-    std::string text = "The weather is good today";
-    std::cout << text << std::endl;
-    Queue qtext;
-    for (char c : text)
-    {
-        if (c != ' ')
-        {
-            qtext.enqueue(c);
-        }
-        else
-        {
-            std::cout << doubling(qtext) << " ";
-            while (!qtext.is_empty())
-            {
-                qtext.dequeue();
-                
-            }
-        }
-
-    }
-    std::cout << doubling(qtext) << " ";
-    
-    return 0;
 }
